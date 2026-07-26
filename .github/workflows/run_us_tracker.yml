@@ -1,11 +1,11 @@
 name: US Stock Data Collector
 
 on:
-schedule:
-      # 한국 시간 평일 아침 5시 (UTC 기준 오후 20시)에 실행
-      - cron: '0 20 * * 1-5'
+  schedule:
+    # 화, 수, 목, 금, 토요일 한국 시간 아침 5시에 실행 (UTC 기준 월~금 밤 20시)
+    - cron: '0 20 * * 2-6'
+  workflow_dispatch:
 
-# 깃허브 파일 쓰기 권한 추가 (필수)
 permissions:
   contents: write
 
@@ -38,6 +38,5 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add *.csv
-        # 변경사항이 있을 때만 커밋
+        git add *.csv || true
         git diff --quiet && git diff --staged --quiet || (git commit -m "Update stock data [skip ci]" && git push)
